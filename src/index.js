@@ -22,6 +22,12 @@ function calculateWinner(squares) {
   return null;
 }
 
+function Reverse(props) {
+  return (
+    <button className="reverse" onClick={props.onClick }>Reverse</button>
+  );
+}
+
 function Square(props) {
   return (
     <button className="square" onClick={ props.onClick }>
@@ -68,9 +74,11 @@ class Game extends React.Component {
     this.state = {
       history: [{
         squares: Array(9).fill(null),
+        count: 0,
       }],
       xIsNext: true,
       stepNumber: 0,
+      reverse: false,
     }
   }
   getMoveCharacter() {
@@ -82,6 +90,10 @@ class Game extends React.Component {
       xIsNext: step % 2 === 0,
     })
   };
+  reverse() {
+    this.setState({ reverse: !this.state.reverse });
+  }
+
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[this.state.stepNumber];
@@ -96,6 +108,7 @@ class Game extends React.Component {
         squares,
         play: i,
         player: this.getMoveCharacter(),
+        count: history.length,
       }]),
       xIsNext,
       stepNumber: history.length,
@@ -111,9 +124,9 @@ class Game extends React.Component {
       if (move) {
         const row = Math.floor(step.play / 3) + 1; 
         const column = (step.play % 3) + 1;
-        description = `Go to move ${move} (Player: ${step.player}, Row: ${row}, Column: ${column})`
+        description = `Rewind to move ${move} (Player: ${step.player}, Row: ${row}, Column: ${column})`
       } else {
-        description = 'Go to game start';
+        description = 'Restart Game';
       }
       const fontWeight = ( move === history.length - 1 ) ? 'bold' : 'normal' ; 
       return (
@@ -122,7 +135,6 @@ class Game extends React.Component {
        </li>
       );
     });
-
 
     const status = winner ? `Winner: ${winner}` : `Next player: ${this.getMoveCharacter()}`;
 
@@ -136,7 +148,10 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ul>{ this.state.reverse ? moves.reverse() : moves }</ul>
+          <div>
+            <Reverse onClick={() => this.reverse()}/>
+          </div>
         </div>
       </div>
     );
