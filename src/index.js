@@ -66,7 +66,7 @@ class Board extends React.Component {
     const squares = [];
     for(var row = 0; row < 3; row++) {
         squares.push(
-          <div className="board-row">{this.getRowSquares(row, winningLine)}</div>
+          <div key={row} className="board-row">{this.getRowSquares(row, winningLine)}</div>
         );
     }
     return squares;
