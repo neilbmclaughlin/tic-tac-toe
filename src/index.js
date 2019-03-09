@@ -115,9 +115,10 @@ class Game extends React.Component {
       } else {
         description = 'Go to game start';
       }
+      const fontWeight = ( move === history.length - 1 ) ? 'bold' : 'normal' ; 
       return (
        <li key={move}>
-         <button onClick={() => this.jumpTo(move)}>{description}</button>
+         <button style={{'fontWeight': fontWeight }} onClick={() => this.jumpTo(move)}>{description}</button>
        </li>
       );
     });
