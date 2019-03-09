@@ -145,8 +145,15 @@ class Game extends React.Component {
       );
     });
 
+    let status;
     const winnerDetails = calculateWinner(current.squares);
-    const status = winnerDetails ? `Winner: ${winnerDetails.winner}` : `Next player: ${this.getMoveCharacter()}`;
+    if (winnerDetails) {
+      status = `Winner: ${winnerDetails.winner}`;
+    } else if (current.squares.every((s) => s)) {
+      status = 'Draw'
+    } else {
+      status =  `Next player: ${this.getMoveCharacter()}`;
+    }
 
     return (
       <div className="game">
