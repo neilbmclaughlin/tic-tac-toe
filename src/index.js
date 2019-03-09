@@ -45,25 +45,28 @@ class Board extends React.Component {
       />
     )
   };
+
+  getRowSquares(row) {
+    const squares = [];
+    for(var column = 0; column < 3; column++) {
+        squares.push(this.renderSquare( (row * 3) + column ));
+    }
+    return squares;
+  }
+
+  getBoardSquares() {
+    const squares = [];
+    for(var row = 0; row < 3; row++) {
+        squares.push(
+          <div className="board-row">{this.getRowSquares(row)}</div>
+        );
+    }
+    return squares;
+  }
+
   render() {
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
+      <div>{this.getBoardSquares()}</div>
     );
   }
 }
