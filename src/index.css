@@ -3,6 +3,17 @@ body {
   margin: 20px;
 }
 
+form div {
+  padding: 10px;
+}
+
+form label {
+  display: inline-block;
+  text-align: center;
+  width: 15px;
+  padding-right: 10px;
+}
+
 ol, ul {
   padding-left: 30px;
 }
@@ -33,7 +44,7 @@ ol, ul {
 }
 
 .highlight {
-  background: #f44336;
+  background: green;
 }
 
 .square:focus {
@@ -47,6 +58,10 @@ ol, ul {
 .game {
   display: flex;
   flex-direction: row;
+}
+
+.game-board {
+  margin-left: 20px;
 }
 
 .game-info {

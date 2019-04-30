@@ -31,6 +31,25 @@ function Reverse(props) {
   );
 }
 
+function Players(props) {
+  const { xName, oName, handleChange, xIsNext } = props;
+  const className="highlight";
+  return (
+    <div className="players-form">
+      <form>
+        <div>
+          <label className={!xIsNext ? className : ""}>O</label>
+          <input type="text" name="O" value={oName} onChange={handleChange} />
+        </div>
+        <div>
+          <label className={xIsNext ? className : ""}>X</label>
+          <input type="text" name="X" value={xName} onChange={handleChange} />
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function Square(props) {
   const classes = `square ${props.highlight ? 'highlight' : '' }`
   return (
@@ -87,13 +106,19 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
         count: 0,
       }],
-      xIsNext: true,
+      xIsNext: false,
       stepNumber: 0,
       reverse: false,
     }
   }
+  getPlayerName(character) {
+    return this.state[character] || character;
+  }
   getMoveCharacter() {
     return this.state.xIsNext ? 'X' : 'O';
+  }
+  getMovePlayer() {
+    return this.getPlayerName(this.getMoveCharacter());
   }
   jumpTo(step) {
     this.setState({
@@ -103,6 +128,13 @@ class Game extends React.Component {
   };
   reverse() {
     this.setState({ reverse: !this.state.reverse });
+  }
+  handleChange(event) {
+    const {name, value} = event.target;
+
+    this.setState({
+        [name] : value
+    });
   }
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
@@ -148,21 +180,27 @@ class Game extends React.Component {
     let status;
     const winnerDetails = calculateWinner(current.squares);
     if (winnerDetails) {
-      status = `Winner: ${winnerDetails.winner}`;
+      status = `Winner: ${this.getPlayerName(winnerDetails.winner)}`;
     } else if (current.squares.every((s) => s)) {
       status = 'Draw'
     } else {
-      status =  `Next player: ${this.getMoveCharacter()}`;
+      status =  `Next player: ${this.getMovePlayer()}`;
     }
 
     return (
       <div className="game">
         <div className="game-board">
+          <Players
+             xName={this.state.X}
+             oName={this.state.O}
+             xIsNext={this.state.xIsNext}
+             handleChange={(event) => this.handleChange(event)}
+          />
           <Board
              squares={current.squares}
              winningLine={winnerDetails ? winnerDetails.winningLine : []}
              onClick={(i) => this.handleClick(i) }
-        />
+          />
         </div>
         <div className="game-info">
           <div>{status}</div>
